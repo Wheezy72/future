@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { useBiometrics } from "../src/hooks/useBiometrics";
 import { useHaptics } from "../src/hooks/useHaptics";
@@ -7,6 +7,7 @@ import { useTheme } from "../src/hooks/useTheme";
 import { setPin, verifyPin, getSecurityPrefs } from "../src/services/auth";
 import AnimatedBackground from "../src/components/AnimatedBackground";
 import { markUnlocked } from "./index";
+import { Title, Body } from "../src/components/Typography";
 
 /**
  * PIN entry with biometric unlock.
@@ -69,7 +70,7 @@ export default function PinEntry() {
   return (
     <AnimatedBackground>
       <View style={[styles.container, { padding: 16 }]}>
-        <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Secure Unlock</Text>
+        <Title accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Secure Unlock</Title>
         {mode === "enter" ? (
           <>
             <TextInput
@@ -82,10 +83,10 @@ export default function PinEntry() {
               onChangeText={(t) => setPinState(t.replace(/\D/g, ""))}
             />
             <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={onSubmitPin}>
-              <Text style={{ color: "#fff", fontWeight: "700" }}>Unlock</Text>
+              <Body style={{ color: "#fff", fontWeight: "700" }}>Unlock</Body>
             </TouchableOpacity>
             <TouchableOpacity accessibilityRole="button" style={styles.link} onPress={() => setMode("set")}>
-              <Text style={{ color: theme.colors.accent }}>Set new PIN</Text>
+              <Body style={{ color: theme.colors.accent }}>Set new PIN</Body>
             </TouchableOpacity>
           </>
         ) : (
@@ -100,10 +101,10 @@ export default function PinEntry() {
               onChangeText={(t) => setNewPin(t.replace(/\D/g, ""))}
             />
             <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={onSetPin}>
-              <Text style={{ color: "#fff", fontWeight: "700" }}>Save PIN</Text>
+              <Body style={{ color: "#fff", fontWeight: "700" }}>Save PIN</Body>
             </TouchableOpacity>
             <TouchableOpacity accessibilityRole="button" style={styles.link} onPress={() => setMode("enter")}>
-              <Text style={{ color: theme.colors.accent }}>Back to unlock</Text>
+              <Body style={{ color: theme.colors.accent }}>Back to unlock</Body>
             </TouchableOpacity>
           </>
         )}
@@ -120,7 +121,7 @@ export default function PinEntry() {
               Alert.alert("Biometric Failed", "Use your PIN.");
             }
           }}>
-            <Text style={{ color: theme.colors.text }}>Unlock with Biometrics</Text>
+            <Body style={{ color: theme.colors.text }}>Unlock with Biometrics</Body>
           </TouchableOpacity>
         ) : null}
       </View>

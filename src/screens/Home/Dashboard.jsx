@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useTheme } from "../../hooks/useTheme";
+import { Title, Body } from "../../components/Typography";
 
 /**
  * Dashboard screen: summary of today.
@@ -9,11 +10,11 @@ export default function Dashboard({ stats, level }) {
   const { theme } = useTheme();
   return (
     <View>
-      <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text, fontFamily: theme.typography.displayFamily }]}>Welcome to Future</Text>
-      <Text style={{ color: theme.colors.muted, marginBottom: 12, fontFamily: theme.typography.textFamily }}>Level {level.level} — {level.title}</Text>
+      <Title accessibilityRole="header" style={styles.title}>Welcome to Future</Title>
+      <Body style={{ color: theme.colors.muted, marginBottom: 12 }}>Level {level.level} — {level.title}</Body>
       <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-        <Text style={{ color: theme.colors.text, fontWeight: "700", fontFamily: theme.typography.textFamily }}>Today</Text>
-        <Text style={{ color: theme.colors.muted, fontFamily: theme.typography.textFamily }}>Goals: {stats.goals} • Diary entries: {stats.diary} • Expenses: {stats.expenses}</Text>
+        <Body style={{ color: theme.colors.text, fontWeight: "700" }}>Today</Body>
+        <Body style={{ color: theme.colors.muted }}>Goals: {stats.goals} • Diary entries: {stats.diary} • Expenses: {stats.expenses}</Body>
       </View>
     </View>
   );

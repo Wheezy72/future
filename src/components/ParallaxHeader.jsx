@@ -1,7 +1,8 @@
 import React from "react";
 import Animated, { useAnimatedStyle, useSharedValue, interpolate, Extrapolate } from "react-native-reanimated";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useTheme } from "../hooks/useTheme";
+import { Title } from "./Typography";
 
 /**
  * Parallax header using Reanimated with premium styling.
@@ -20,7 +21,7 @@ export default function ParallaxHeader({ title, scrollY }) {
   return (
     <Animated.View style={[styles.wrap, style]}>
       <View style={[styles.inner, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-        <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>{title}</Text>
+        <Title accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>{title}</Title>
       </View>
     </Animated.View>
   );
@@ -48,5 +49,5 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 3
   },
-  title: { fontSize: 22, fontWeight: "800", letterSpacing: 0.2 }
+  title: { letterSpacing: 0.2 }
 });

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import AnimatedBackground from "../../src/components/AnimatedBackground";
 import { useTheme } from "../../src/hooks/useTheme";
 import { getLevel } from "../../src/constants/Levels";
@@ -11,6 +11,7 @@ import ParallaxHeader from "../../src/components/ParallaxHeader";
 import Dashboard from "../../src/screens/Home/Dashboard";
 import Achievements from "../../src/screens/Home/Achievements";
 import QuickStats from "../../src/screens/Home/QuickStats";
+import { Body } from "../../src/components/Typography";
 
 /**
  * Home tab: Dashboard, Achievements, Quick Stats
@@ -41,7 +42,7 @@ export default function Home() {
       <View style={styles.header}>
         {["dashboard", "achievements", "quick"].map((p) => (
           <TouchableOpacity key={p} accessibilityRole="button" style={[styles.tab, { borderColor: theme.colors.border, backgroundColor: page === p ? theme.colors.card : "transparent" }]} onPress={() => setPage(p)}>
-            <Text style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700", fontFamily: theme.typography.textFamily }}>{p === "quick" ? "Quick Stats" : capitalize(p)}</Text>
+            <Body style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700" }}>{p === "quick" ? "Quick Stats" : capitalize(p)}</Body>
           </TouchableOpacity>
         ))}
       </View>

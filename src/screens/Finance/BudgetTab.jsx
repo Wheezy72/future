@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useTheme } from "../../hooks/useTheme";
 import { upsertBudget } from "../../services/finance";
+import { Body } from "../../components/Typography";
 
 export default function BudgetTab({ onSaved }) {
   const { theme } = useTheme();
@@ -24,7 +25,7 @@ export default function BudgetTab({ onSaved }) {
       <TextInput placeholder="Limit" placeholderTextColor={theme.colors.muted} keyboardType="numeric" value={limit} onChangeText={setLimit} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
       <TextInput placeholder="Period (weekly/monthly)" placeholderTextColor={theme.colors.muted} value={period} onChangeText={setPeriod} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
       <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={onSave}>
-        <Text style={{ color: "#fff", fontWeight: "700" }}>Save Budget</Text>
+        <Body style={{ color: "#fff", fontWeight: "700" }}>Save Budget</Body>
       </TouchableOpacity>
     </View>
   );

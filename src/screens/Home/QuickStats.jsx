@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { useTheme } from "../../hooks/useTheme";
+import { Caption, Subtitle } from "../../components/Typography";
 
 export default function QuickStats({ stats }) {
   const { theme } = useTheme();
@@ -14,11 +15,10 @@ export default function QuickStats({ stats }) {
 }
 
 function Stat({ label, value, color }) {
-  const { theme } = useTheme();
   return (
     <View style={{ flex: 1, padding: 12, borderRadius: 14, borderWidth: 1, borderColor: "rgba(0,0,0,0.06)" }}>
-      <Text style={{ color: "#64748B", marginBottom: 6, fontFamily: theme.typography.textFamily }}>{label}</Text>
-      <Text style={{ color, fontSize: 20, fontWeight: "800", fontFamily: theme.typography.displayFamily }}>{value}</Text>
+      <Caption style={{ marginBottom: 6 }}>{label}</Caption>
+      <Subtitle style={{ color, fontSize: 20 }}>{value}</Subtitle>
     </View>
   );
 }

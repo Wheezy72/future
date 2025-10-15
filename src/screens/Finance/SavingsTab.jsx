@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { useTheme } from "../../hooks/useTheme";
 import { upsertSaving } from "../../services/finance";
+import { Body } from "../../components/Typography";
 
 export default function SavingsTab({ onSaved }) {
   const { theme } = useTheme();
@@ -24,7 +25,7 @@ export default function SavingsTab({ onSaved }) {
       <TextInput placeholder="Target" placeholderTextColor={theme.colors.muted} keyboardType="numeric" value={target} onChangeText={setTarget} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
       <TextInput placeholder="Saved" placeholderTextColor={theme.colors.muted} keyboardType="numeric" value={saved} onChangeText={setSaved} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
       <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={onSave}>
-        <Text style={{ color: "#fff", fontWeight: "700" }}>Save</Text>
+        <Body style={{ color: "#fff", fontWeight: "700" }}>Save</Body>
       </TouchableOpacity>
     </View>
   );

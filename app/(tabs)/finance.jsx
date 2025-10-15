@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Alert, TextInput } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Alert, TextInput } from "react-native";
 import AnimatedBackground from "../../src/components/AnimatedBackground";
 import { useTheme } from "../../src/hooks/useTheme";
 import { analytics, listBudgets, listExpenses, listSavings, addExpense } from "../../src/services/finance";
@@ -10,6 +10,7 @@ import BudgetTab from "../../src/screens/Finance/BudgetTab";
 import SavingsTab from "../../src/screens/Finance/SavingsTab";
 import AnalyticsTab from "../../src/screens/Finance/AnalyticsTab";
 import { formatCurrency } from "../../src/utils/format";
+import { Title, Body } from "../../src/components/Typography";
 
 /**
  * Finance tab: Expenses, Budgets, Savings, M-Pesa, Analytics
@@ -70,7 +71,7 @@ export default function Finance() {
       <View style={styles.header}>
         {["expenses", "budgets", "savings", "mpesa", "analytics"].map((p) => (
           <TouchableOpacity key={p} accessibilityRole="button" style={[styles.tab, { borderColor: theme.colors.border, backgroundColor: page === p ? theme.colors.card : "transparent" }]} onPress={() => setPage(p)}>
-            <Text style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700", fontFamily: theme.typography.textFamily }}>{capitalize(p)}</Text>
+            <Body style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700" }}>{capitalize(p)}</Body>
           </TouchableOpacity>
         ))}
       </View>
@@ -85,7 +86,7 @@ export default function Finance() {
         {page === "savings" && <SavingsTab onSaved={refresh} />}
         {page === "mpesa" && (
           <View>
-            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>M-Pesa Parser</Text>
+            <Title accessibilityRole="header" style={styles.title}>M-Pesa Parser</Title>
             <TextInput
               placeholder="Paste M-Pesa message"
               placeholderTextColor={theme.colors.muted}
@@ -96,7 +97,7 @@ export default function Finance() {
             />
             <View style={{ flexDirection: "row", gap: 8, marginBottom: 8 }}>
               <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={onParse}>
-                <Text style={{ color: "#fff", fontWeight: "700" }}>Parse</Text>
+                <Body style={{ color: "#fff", fontWeight: "700" }}>Parse</Body>
               </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row", gap: 8, marginBottom: 8 }}>
@@ -117,7 +118,7 @@ export default function Finance() {
               />
             </View>
             <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={onAddFromMpesa}>
-              <Text style={{ color: "#fff", fontWeight: "700" }}>Add Expense</Text>
+              <Body style={{ color: "#fff", fontWeight: "700" }}>Add Expense</Body>
             </TouchableOpacity>
           </View>
         )}

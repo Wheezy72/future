@@ -1,8 +1,9 @@
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../hooks/useTheme";
 import { useHaptics } from "../hooks/useHaptics";
+import { Caption } from "./Typography";
 
 /**
  * Premium glassmorphic bottom tab bar for Expo Router Tabs.
@@ -53,9 +54,9 @@ export default function GlassTabBar({ state, descriptors, navigation }) {
               style={styles.item}
             >
               {options.tabBarIcon ? options.tabBarIcon({ focused: isFocused, color: isFocused ? theme.colors.primary : theme.colors.muted, size: 22 }) : null}
-              <Text style={[styles.label, { color: isFocused ? theme.colors.primary : theme.colors.muted }]} numberOfLines={1}>
+              <Caption style={[styles.label, { color: isFocused ? theme.colors.primary : theme.colors.muted }]} numberOfLines={1}>
                 {label}
-              </Text>
+              </Caption>
             </TouchableOpacity>
           );
         })}
@@ -81,5 +82,5 @@ const styles = StyleSheet.create({
     elevation: 8
   },
   item: { flex: 1, alignItems: "center", justifyContent: "center", gap: 4 },
-  label: { fontSize: 12, fontWeight: "700", letterSpacing: 0.2, fontFamily: "Rajdhani" }
+  label: { fontSize: 12, fontWeight: "700", letterSpacing: 0.2 }
 });

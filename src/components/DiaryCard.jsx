@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Animated, Text } from "react-native";
 import { useTheme } from "../hooks/useTheme";
 import { formatDate } from "../utils/format";
+import { Caption, Body } from "./Typography";
 
 /**
  * Diary entry card.
@@ -16,16 +17,16 @@ export default function DiaryCard({ entry, onPress, onDelete }) {
     <Animated.View style={{ transform: [{ scale }] }}>
       <TouchableOpacity accessibilityRole="button" onPress={() => onPress?.(entry)} onPressIn={pressIn} onPressOut={pressOut} style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
         <View style={styles.row}>
-          <Text style={[styles.date, { color: theme.colors.muted }]}>{formatDate(entry.date)}</Text>
+          <Caption style={[styles.date, { color: theme.colors.muted }]}>{formatDate(entry.date)}</Caption>
           <Text style={{ fontSize: 18 }}>{entry.mood === "happy" ? "😊" : entry.mood === "calm" ? "😌" : "📝"}</Text>
         </View>
-        <Text style={{ color: theme.colors.text, fontFamily: "Rajdhani" }} numberOfLines={3}>{entry.text}</Text>
+        <Body numberOfLines={3} style={{ color: theme.colors.text }}>{entry.text}</Body>
         <View style={styles.actions}>
           <TouchableOpacity accessibilityRole="button" style={[styles.btn, { borderColor: theme.colors.border }]} onPress={() => onPress?.(entry)}>
-            <Text style={{ color: theme.colors.primary, fontWeight: "700" }}>Edit</Text>
+            <Body style={{ color: theme.colors.primary, fontWeight: "700" }}>Edit</Body>
           </TouchableOpacity>
           <TouchableOpacity accessibilityRole="button" style={[styles.btn, { borderColor: theme.colors.border }]} onPress={() => onDelete?.(entry)}>
-            <Text style={{ color: theme.colors.danger, fontWeight: "700" }}>Delete</Text>
+            <Body style={{ color: theme.colors.danger, fontWeight: "700" }}>Delete</Body>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

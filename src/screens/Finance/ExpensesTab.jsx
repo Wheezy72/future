@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
 import { useTheme } from "../../hooks/useTheme";
 import { ExpenseCategories } from "../../constants/Categories";
 import { addExpense } from "../../services/finance";
 import { formatCurrency } from "../../utils/format";
+import { Body } from "../../components/Typography";
 
 export default function ExpensesTab({ onAdded }) {
   const { theme } = useTheme();
@@ -29,12 +30,12 @@ export default function ExpensesTab({ onAdded }) {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginVertical: 10 }}>
         {ExpenseCategories.map(c => (
           <TouchableOpacity key={c.key} accessibilityRole="button" onPress={() => setCategory(c.key)} style={[styles.cat, { borderColor: theme.colors.border, backgroundColor: category === c.key ? theme.colors.surface : "transparent" }]}>
-            <Text style={{ color: theme.colors.text }}>{c.label}</Text>
+            <Body style={{ color: theme.colors.text }}>{c.label}</Body>
           </TouchableOpacity>
         ))}
       </ScrollView>
       <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={onAdd}>
-        <Text style={{ color: "#fff", fontWeight: "700" }}>Add Expense</Text>
+        <Body style={{ color: "#fff", fontWeight: "700" }}>Add Expense</Body>
       </TouchableOpacity>
     </View>
   );

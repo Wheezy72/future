@@ -5,6 +5,7 @@ import { ThemeProvider, useTheme } from "../src/hooks/useTheme";
 import { useFonts } from "../src/hooks/useFonts";
 import GlassTabBar from "../src/components/GlassTabBar";
 import { initNotifications } from "../src/services/notifications";
+import { Body } from "../src/components/Typography";
 
 function TabIcon({ label, focused }) {
   // Minimal custom icon using text glyphs for JS-only
@@ -73,7 +74,7 @@ export default function RootLayout() {
   if (!fontsReady) {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Loading…</Text>
+        <Body>Loading…</Body>
       </View>
     );
   }

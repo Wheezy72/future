@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { useTheme } from "../../hooks/useTheme";
+import { Title, Body } from "../../components/Typography";
 
 export default function MindfulnessTimer() {
   const { theme } = useTheme();
@@ -21,17 +22,17 @@ export default function MindfulnessTimer() {
 
   return (
     <View>
-      <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text, fontFamily: theme.typography.displayFamily }]}>Mindfulness Timer</Text>
-      <Text style={{ color: theme.colors.muted, marginBottom: 12, fontSize: 24, textAlign: "center", fontFamily: theme.typography.textFamily }}>{formatTime(seconds)}</Text>
+      <Title accessibilityRole="header" style={styles.title}>Mindfulness Timer</Title>
+      <Body style={{ color: theme.colors.muted, marginBottom: 12, fontSize: 24, textAlign: "center" }}>{formatTime(seconds)}</Body>
       <View style={{ flexDirection: "row", gap: 8, justifyContent: "center" }}>
         <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={startTimer}>
-          <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Start</Text>
+          <Body style={{ color: "#fff", fontWeight: "700" }}>Start</Body>
         </TouchableOpacity>
         <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.warning }]} onPress={stopTimer}>
-          <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Pause</Text>
+          <Body style={{ color: "#fff", fontWeight: "700" }}>Pause</Body>
         </TouchableOpacity>
         <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={resetTimer}>
-          <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Reset</Text>
+          <Body style={{ color: "#fff", fontWeight: "700" }}>Reset</Body>
         </TouchableOpacity>
       </View>
     </View>

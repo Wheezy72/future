@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useTheme } from "../../hooks/useTheme";
 import { formatDate } from "../../utils/format";
+import { Subtitle, Caption, Body } from "../../components/Typography";
 
 /**
  * Calendar week view for diary entries.
@@ -27,9 +28,9 @@ export default function Calendar({ entries = [] }) {
         const has = map[key] || 0;
         return (
           <View key={key} style={[styles.cell, { backgroundColor: has ? theme.colors.secondary : theme.colors.surface, borderColor: theme.colors.border }]}>
-            <Text style={{ color: theme.colors.text, fontWeight: "600" }}>{d.toLocaleDateString(undefined, { weekday: "short" })}</Text>
-            <Text style={{ color: theme.colors.muted, fontSize: 12 }}>{formatDate(d)}</Text>
-            <Text style={{ color: theme.colors.text }}>{has} entries</Text>
+            <Subtitle style={{ color: theme.colors.text }}>{d.toLocaleDateString(undefined, { weekday: "short" })}</Subtitle>
+            <Caption>{formatDate(d)}</Caption>
+            <Body style={{ color: theme.colors.text }}>{has} entries</Body>
           </View>
         );
       })}
