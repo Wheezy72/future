@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.expo/
+.expo-shared/
+.env
+*.log
+android/
+ios/
+.DS_Store
+assets/*.psd
+assets/*.ai
