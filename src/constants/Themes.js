@@ -6,11 +6,11 @@
 export const LightTheme = {
   name: "light",
   colors: {
-    background: "#0F1220", // cyberpunk dark bluish for better contrast even in light
+    background: "#0F1220",
     surface: "rgba(255,255,255,0.08)",
-    primary: "#00E5FF", // neon cyan
-    secondary: "#FF3D00", // neon orange
-    accent: "#D500F9", // neon magenta
+    primary: "#00E5FF", 
+    secondary: "#FF3D00", 
+    accent: "#D500F9", 
     text: "#E6E6E6",
     muted: "#9AA1B1",
     border: "rgba(230,230,230,0.12)",

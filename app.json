@@ -19,8 +19,7 @@
       "**/*"
     ],
     "plugins": [
-      "expo-router",
-      "expo-font"
+      "expo-router"
     ],
     "android": {
       "package": "com.future.app",

@@ -201,7 +201,7 @@ npm run lint          # Run ESLint code analysis
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how you can help:
+I welcome contributions! Here's how you can help:
 
 1. 🍴 **Fork the repository**
 2. 🌟 **Create a feature branch** (`git checkout -b feature/amazing-feature`)
@@ -244,7 +244,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ in Nairobi, Kenya** 🇰🇪
+**Built with ❤️ in Laikipia, Kenya** 🇰🇪
 
 *Transforming personal productivity, one pixel at a time*
 
