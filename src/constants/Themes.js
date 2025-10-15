@@ -6,39 +6,32 @@
 export const LightTheme = {
   name: "light",
   colors: {
-    background: "#F7F8FA",
-    surface: "rgba(255,255,255,0.85)",
-    primary: "#2563EB",
-    secondary: "#10B981",
-    accent: "#A78BFA",
-    text: "#0F172A",
-    muted: "#64748B",
-    border: "rgba(15,23,42,0.08)",
+    background: "#0F1220", // cyberpunk dark bluish for better contrast even in light
+    surface: "rgba(255,255,255,0.08)",
+    primary: "#00E5FF", // neon cyan
+    secondary: "#FF3D00", // neon orange
+    accent: "#D500F9", // neon magenta
+    text: "#E6E6E6",
+    muted: "#9AA1B1",
+    border: "rgba(230,230,230,0.12)",
     success: "#22C55E",
     warning: "#F59E0B",
     danger: "#EF4444",
-    card: "rgba(255,255,255,0.7)",
-    glass: "rgba(255,255,255,0.25)"
+    card: "rgba(255,255,255,0.05)",
+    glass: "rgba(255,255,255,0.06)"
   },
-  elevation: {
-    sm: 2,
-    md: 4,
-    lg: 8
-  },
+  elevation: { sm: 2, md: 4, lg: 8 },
   spacing: 8,
-  radius: {
-    sm: 10,
-    md: 16,
-    lg: 24
-  },
+  radius: { sm: 10, md: 16, lg: 24 },
   typography: {
     h1: 28,
     h2: 22,
     h3: 18,
     body: 16,
     small: 13,
-    displayFamily: "Future-Display",
-    textFamily: "Future-Text"
+    displayFamily: "Orbitron",
+    textFamily: "Rajdhani",
+    monoFamily: "ShareTechMono"
   }
 };
 
@@ -47,9 +40,9 @@ export const DarkTheme = {
   colors: {
     background: "#0A0B0E",
     surface: "rgba(20,22,25,0.85)",
-    primary: "#60A5FA",
-    secondary: "#34D399",
-    accent: "#C084FC",
+    primary: "#00E5FF",
+    secondary: "#FF3D00",
+    accent: "#D500F9",
     text: "#E5E7EB",
     muted: "#94A3B8",
     border: "rgba(231,233,238,0.08)",
@@ -59,25 +52,18 @@ export const DarkTheme = {
     card: "rgba(24,26,29,0.7)",
     glass: "rgba(255,255,255,0.06)"
   },
-  elevation: {
-    sm: 2,
-    md: 4,
-    lg: 8
-  },
+  elevation: { sm: 2, md: 4, lg: 8 },
   spacing: 8,
-  radius: {
-    sm: 10,
-    md: 16,
-    lg: 24
-  },
+  radius: { sm: 10, md: 16, lg: 24 },
   typography: {
     h1: 28,
     h2: 22,
     h3: 18,
     body: 16,
     small: 13,
-    displayFamily: "Future-Display",
-    textFamily: "Future-Text"
+    displayFamily: "Orbitron",
+    textFamily: "Rajdhani",
+    monoFamily: "ShareTechMono"
   }
 };
 

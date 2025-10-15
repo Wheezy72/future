@@ -19,7 +19,7 @@ export default function DiaryCard({ entry, onPress, onDelete }) {
           <Text style={[styles.date, { color: theme.colors.muted }]}>{formatDate(entry.date)}</Text>
           <Text style={{ fontSize: 18 }}>{entry.mood === "happy" ? "😊" : entry.mood === "calm" ? "😌" : "📝"}</Text>
         </View>
-        <Text style={{ color: theme.colors.text }} numberOfLines={3}>{entry.text}</Text>
+        <Text style={{ color: theme.colors.text, fontFamily: "Rajdhani" }} numberOfLines={3}>{entry.text}</Text>
         <View style={styles.actions}>
           <TouchableOpacity accessibilityRole="button" style={[styles.btn, { borderColor: theme.colors.border }]} onPress={() => onPress?.(entry)}>
             <Text style={{ color: theme.colors.primary, fontWeight: "700" }}>Edit</Text>

@@ -82,7 +82,7 @@ export default function GoalsJournal() {
       <View style={styles.header}>
         {["goals", "diary"].map((p) => (
           <TouchableOpacity key={p} accessibilityRole="button" style={[styles.tab, { borderColor: theme.colors.border, backgroundColor: page === p ? theme.colors.card : "transparent" }]} onPress={() => setPage(p)}>
-            <Text style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700" }}>{capitalize(p)}</Text>
+            <Text style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700", fontFamily: theme.typography.textFamily }}>{capitalize(p)}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -90,7 +90,7 @@ export default function GoalsJournal() {
         {page === "goals" && (
           <View>
             <Animated.View style={{ transform: [{ scale: celebration.interpolate({ inputRange: [0, 1], outputRange: [1, 1.08] }) }] }}>
-              <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Goals</Text>
+              <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text, fontFamily: theme.typography.displayFamily }]}>Goals</Text>
             </Animated.View>
             <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
               <TextInput placeholder="Goal title" placeholderTextColor={theme.colors.muted} value={title} onChangeText={setTitle} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />

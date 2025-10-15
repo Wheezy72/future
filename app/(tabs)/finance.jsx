@@ -70,7 +70,7 @@ export default function Finance() {
       <View style={styles.header}>
         {["expenses", "budgets", "savings", "mpesa", "analytics"].map((p) => (
           <TouchableOpacity key={p} accessibilityRole="button" style={[styles.tab, { borderColor: theme.colors.border, backgroundColor: page === p ? theme.colors.card : "transparent" }]} onPress={() => setPage(p)}>
-            <Text style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700" }}>{capitalize(p)}</Text>
+            <Text style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700", fontFamily: theme.typography.textFamily }}>{capitalize(p)}</Text>
           </TouchableOpacity>
         ))}
       </View>

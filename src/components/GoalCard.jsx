@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     elevation: 4
   },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  title: { fontSize: 16, fontWeight: "700", flex: 1, marginRight: 8 },
+  title: { fontSize: 16, fontWeight: "700", flex: 1, marginRight: 8, fontFamily: "Rajdhani" },
   status: { width: 8, height: 8, borderRadius: 8 },
   progressTrack: { height: 10, borderRadius: 10, overflow: "hidden", marginBottom: 8 },
   progressFill: { height: 10, borderRadius: 10 },

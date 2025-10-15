@@ -81,5 +81,5 @@ const styles = StyleSheet.create({
     elevation: 8
   },
   item: { flex: 1, alignItems: "center", justifyContent: "center", gap: 4 },
-  label: { fontSize: 12, fontWeight: "700", letterSpacing: 0.2 }
+  label: { fontSize: 12, fontWeight: "700", letterSpacing: 0.2, fontFamily: "Rajdhani" }
 });

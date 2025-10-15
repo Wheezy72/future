@@ -2,8 +2,11 @@ import * as Font from "expo-font";
 import { useEffect, useState } from "react";
 
 /**
- * Load custom fonts from assets/fonts with graceful fallback.
- * Place your .ttf/.otf files under assets/fonts and map them here.
+ * Load cyberpunk theme fonts from assets/fonts.
+ * Recommended set:
+ * - Orbitron.ttf (display/headline)
+ * - Rajdhani.ttf (body text)
+ * - ShareTechMono.ttf (mono/accent)
  */
 export function useFonts() {
   const [ready, setReady] = useState(false);
@@ -12,9 +15,9 @@ export function useFonts() {
     (async () => {
       try {
         await Font.loadAsync({
-          // Example mappings; add files to assets/fonts
-          "Future-Display": require("../../assets/fonts/Future-Display.ttf"),
-          "Future-Text": require("../../assets/fonts/Future-Text.ttf")
+          Orbitron: require("../../assets/fonts/Orbitron.ttf"),
+          Rajdhani: require("../../assets/fonts/Rajdhani.ttf"),
+          ShareTechMono: require("../../assets/fonts/ShareTechMono.ttf")
         });
       } catch (_e) {
         // Fallback to system fonts
