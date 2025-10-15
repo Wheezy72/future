@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Tabs } from "expo-router";
 import { Text, View } from "react-native";
 import { ThemeProvider, useTheme } from "../src/hooks/useTheme";
 import { useFonts } from "../src/hooks/useFonts";
 import GlassTabBar from "../src/components/GlassTabBar";
+import { initNotifications } from "../src/services/notifications";
 
 function TabIcon({ label, focused }) {
   // Minimal custom icon using text glyphs for JS-only
@@ -12,6 +13,9 @@ function TabIcon({ label, focused }) {
 
 function LayoutInner() {
   const { theme } = useTheme();
+  useEffect(() => {
+    initNotifications();
+  }, []);
   return (
     <Tabs
       screenOptions={{

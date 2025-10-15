@@ -9,6 +9,7 @@ import MoodTab from "../../src/screens/Wellness/MoodTab";
 import MindfulnessTimer from "../../src/screens/Wellness/MindfulnessTimer";
 import StreaksTab from "../../src/screens/Wellness/StreaksTab";
 import DiaryCard from "../../src/components/DiaryCard";
+import * as DocumentPicker from "expo-document-picker";
 
 /**
  * Wellness: Mood, Mindfulness Timer, Streaks, Diary
@@ -31,6 +32,20 @@ export default function Wellness() {
     await refresh();
   }
 
+  async function pickImport() {
+    try {
+      const res = await DocumentPicker.getDocumentAsync({ type: "application/json" });
+      if (res?.assets?.length) {
+        const asset = res.assets[0];
+        const count = await importEntries(asset.uri);
+        Alert.alert("Imported", `Loaded ${count} entries`);
+        await refresh();
+      }
+    } catch (e) {
+      Alert.alert("Error", e.message);
+    }
+  }
+
   return (
     <AnimatedBackground>
       <View style={styles.header}>
@@ -51,7 +66,7 @@ export default function Wellness() {
         {page === "streaks" && <StreaksTab streak={streak} />}
         {page === "diary" && (
           <View>
-            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Diary</Text>
+            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text, fontFamily: theme.typography.displayFamily }]}>Diary</Text>
             <View style={{ flexDirection: "row", gap: 8, marginBottom: 8 }}>
               <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={async () => {
                 try {
@@ -61,19 +76,10 @@ export default function Wellness() {
                   Alert.alert("Error", e.message);
                 }
               }}>
-                <Text style={{ color: "#fff", fontWeight: "700" }}>Export</Text>
+                <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Export</Text>
               </TouchableOpacity>
-              <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={async () => {
-                try {
-                  const uri = "file:///data/user/0/host.exp.exponent/files/ExperienceData/%2540anonymous%252Ffuture/future_diary_backup.json";
-                  const count = await importEntries(uri);
-                  Alert.alert("Imported", `Loaded ${count} entries`);
-                  await refresh();
-                } catch (e) {
-                  Alert.alert("Error", e.message);
-                }
-              }}>
-                <Text style={{ color: "#fff", fontWeight: "700" }}>Import</Text>
+              <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={pickImport}>
+                <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Import</Text>
               </TouchableOpacity>
             </View>
             {entries.map(e => (
