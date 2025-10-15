@@ -73,8 +73,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 12,
     paddingVertical: 10,
-    backdropFilter: "blur(10px)"
+    // Simulated glass via transparency and shadow
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 8
   },
   item: { flex: 1, alignItems: "center", justifyContent: "center", gap: 4 },
-  label: { fontSize: 12, fontWeight: "600" }
+  label: { fontSize: 12, fontWeight: "700", letterSpacing: 0.2 }
 });

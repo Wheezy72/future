@@ -1,10 +1,10 @@
 import React from "react";
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, interpolate, Extrapolate } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, useSharedValue, interpolate, Extrapolate } from "react-native-reanimated";
 import { View, Text, StyleSheet } from "react-native";
 import { useTheme } from "../hooks/useTheme";
 
 /**
- * Parallax header using Reanimated.
+ * Parallax header using Reanimated with premium styling.
  * Pass scrollY from onScroll with useSharedValue.
  */
 export default function ParallaxHeader({ title, scrollY }) {
@@ -12,8 +12,9 @@ export default function ParallaxHeader({ title, scrollY }) {
 
   const style = useAnimatedStyle(() => {
     const translateY = interpolate(scrollY.value, [0, 200], [0, -40], Extrapolate.CLAMP);
-    const scale = interpolate(scrollY.value, [0, 200], [1, 0.92], Extrapolate.CLAMP);
-    return { transform: [{ translateY }, { scale }] };
+    const scale = interpolate(scrollY.value, [0, 200], [1, 0.94], Extrapolate.CLAMP);
+    const opacity = interpolate(scrollY.value, [0, 120], [1, 0.6], Extrapolate.CLAMP);
+    return { transform: [{ translateY }, { scale }], opacity };
   });
 
   return (
@@ -35,7 +36,17 @@ export function useParallax() {
 }
 
 const styles = StyleSheet.create({
-  wrap: { paddingHorizontal: 16, paddingTop: 16 },
-  inner: { padding: 12, borderRadius: 16, borderWidth: 1 },
-  title: { fontSize: 22, fontWeight: "800" }
+  wrap: { paddingHorizontal: 16, paddingTop: 12 },
+  inner: {
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 18,
+    borderWidth: 1,
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3
+  },
+  title: { fontSize: 22, fontWeight: "800", letterSpacing: 0.2 }
 });
