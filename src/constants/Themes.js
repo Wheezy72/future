@@ -36,7 +36,9 @@ export const LightTheme = {
     h2: 22,
     h3: 18,
     body: 16,
-    small: 13
+    small: 13,
+    displayFamily: "Future-Display",
+    textFamily: "Future-Text"
   }
 };
 
@@ -73,7 +75,9 @@ export const DarkTheme = {
     h2: 22,
     h3: 18,
     body: 16,
-    small: 13
+    small: 13,
+    displayFamily: "Future-Display",
+    textFamily: "Future-Text"
   }
 };
 

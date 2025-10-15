@@ -72,63 +72,63 @@ export default function Settings() {
   return (
     <AnimatedBackground>
       <ScrollView contentContainerStyle={{ padding: 16 }}>
-        <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Preferences</Text>
+        <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text, fontFamily: theme.typography.displayFamily }]}>Preferences</Text>
         <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-          <Text style={{ color: theme.colors.text, fontWeight: "700", marginBottom: 8 }}>Theme</Text>
+          <Text style={{ color: theme.colors.text, fontWeight: "700", marginBottom: 8, fontFamily: theme.typography.textFamily }}>Theme</Text>
           <View style={{ flexDirection: "row", gap: 8 }}>
             {["light", "dark"].map(m => (
               <TouchableOpacity key={m} accessibilityRole="button" onPress={() => setMode(m)} style={[styles.cat, { borderColor: theme.colors.border, backgroundColor: mode === m ? theme.colors.surface : "transparent" }]}>
-                <Text style={{ color: theme.colors.text }}>{m.toUpperCase()}</Text>
+                <Text style={{ color: theme.colors.text, fontFamily: theme.typography.textFamily }}>{m.toUpperCase()}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
 
         <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-          <Text style={{ color: theme.colors.text, fontWeight: "700", marginBottom: 8 }}>Security</Text>
+          <Text style={{ color: theme.colors.text, fontWeight: "700", marginBottom: 8, fontFamily: theme.typography.textFamily }}>Security</Text>
           <View style={styles.row}>
-            <Text style={{ color: theme.colors.text, flex: 1 }}>Biometric Login</Text>
+            <Text style={{ color: theme.colors.text, flex: 1, fontFamily: theme.typography.textFamily }}>Biometric Login</Text>
             <Switch value={prefs.biometrics} onValueChange={(v) => setPrefs(p => ({ ...p, biometrics: v }))} />
           </View>
           <View style={styles.row}>
-            <Text style={{ color: theme.colors.text, flex: 1 }}>Lock Timeout (ms)</Text>
+            <Text style={{ color: theme.colors.text, flex: 1, fontFamily: theme.typography.textFamily }}>Lock Timeout (ms)</Text>
             <TextInput keyboardType="numeric" value={String(prefs.lockTimeout)} onChangeText={(v) => setPrefs(p => ({ ...p, lockTimeout: Number(v) }))} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, flex: 1 }]} />
           </View>
           <View style={styles.row}>
-            <Text style={{ color: theme.colors.text, flex: 1 }}>Set PIN</Text>
+            <Text style={{ color: theme.colors.text, flex: 1, fontFamily: theme.typography.textFamily }}>Set PIN</Text>
             <TextInput secureTextEntry keyboardType="numeric" maxLength={6} value={pin} onChangeText={setPinInput} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, flex: 1 }]} />
           </View>
           <View style={{ flexDirection: "row", gap: 8 }}>
             <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={onSavePrefs}>
-              <Text style={{ color: "#fff", fontWeight: "700" }}>Save Preferences</Text>
+              <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Save Preferences</Text>
             </TouchableOpacity>
             <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={onSavePin}>
-              <Text style={{ color: "#fff", fontWeight: "700" }}>Save PIN</Text>
+              <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Save PIN</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-          <Text style={{ color: theme.colors.text, fontWeight: "700", marginBottom: 8 }}>Backup & Restore</Text>
-          <Text style={{ color: theme.colors.muted }}>Use export/import within Wellness → Diary.</Text>
+          <Text style={{ color: theme.colors.text, fontWeight: "700", marginBottom: 8, fontFamily: theme.typography.textFamily }}>Backup & Restore</Text>
+          <Text style={{ color: theme.colors.muted, fontFamily: theme.typography.textFamily }}>Use export/import within Wellness → Diary.</Text>
         </View>
 
         <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-          <Text style={{ color: theme.colors.text, fontWeight: "700", marginBottom: 8 }}>Notifications</Text>
+          <Text style={{ color: theme.colors.text, fontWeight: "700", marginBottom: 8, fontFamily: theme.typography.textFamily }}>Notifications</Text>
           <View style={styles.row}>
-            <Text style={{ color: theme.colors.text, flex: 1 }}>Habit Reminder (hour/min)</Text>
+            <Text style={{ color: theme.colors.text, flex: 1, fontFamily: theme.typography.textFamily }}>Habit Reminder (hour/min)</Text>
             <TextInput keyboardType="numeric" value={habitHour} onChangeText={setHabitHour} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, width: 60 }]} />
             <TextInput keyboardType="numeric" value={habitMinute} onChangeText={setHabitMinute} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, width: 60 }]} />
             <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={scheduleHabit}>
-              <Text style={{ color: "#fff" }}>Set</Text>
+              <Text style={{ color: "#fff", fontFamily: theme.typography.textFamily }}>Set</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.row}>
-            <Text style={{ color: theme.colors.text, flex: 1 }}>Mindfulness Reminder (hour/min)</Text>
+            <Text style={{ color: theme.colors.text, flex: 1, fontFamily: theme.typography.textFamily }}>Mindfulness Reminder (hour/min)</Text>
             <TextInput keyboardType="numeric" value={mindHour} onChangeText={setMindHour} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, width: 60 }]} />
             <TextInput keyboardType="numeric" value={mindMinute} onChangeText={setMindMinute} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, width: 60 }]} />
             <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={scheduleMindfulness}>
-              <Text style={{ color: "#fff" }}>Set</Text>
+              <Text style={{ color: "#fff", fontFamily: theme.typography.textFamily }}>Set</Text>
             </TouchableOpacity>
           </View>
         </View>

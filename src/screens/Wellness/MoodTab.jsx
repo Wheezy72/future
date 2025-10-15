@@ -22,18 +22,18 @@ export default function MoodTab({ onSaved }) {
 
   return (
     <View>
-      <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Log Mood</Text>
+      <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text, fontFamily: theme.typography.displayFamily }]}>Log Mood</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginVertical: 10 }}>
         {MoodCategories.map(c => (
           <TouchableOpacity key={c.key} accessibilityRole="button" onPress={() => setMood(c.key)} style={[styles.cat, { borderColor: theme.colors.border, backgroundColor: mood === c.key ? theme.colors.surface : "transparent" }]}>
-            <Text style={{ color: theme.colors.text }}>{c.emoji} {c.label}</Text>
+            <Text style={{ color: theme.colors.text, fontFamily: theme.typography.textFamily }}>{c.emoji} {c.label}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
       <TextInput placeholder="What's on your mind?" placeholderTextColor={theme.colors.muted} value={text} onChangeText={setText} multiline style={[styles.input, { minHeight: 120, borderColor: theme.colors.border, color: theme.colors.text }]} />
       <TextInput placeholder="XP" placeholderTextColor={theme.colors.muted} keyboardType="numeric" value={xp} onChangeText={setXp} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
       <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={onSave}>
-        <Text style={{ color: "#fff", fontWeight: "700" }}>Save Entry</Text>
+        <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Save Entry</Text>
       </TouchableOpacity>
     </View>
   );

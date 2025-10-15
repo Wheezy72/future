@@ -14,10 +14,11 @@ export default function QuickStats({ stats }) {
 }
 
 function Stat({ label, value, color }) {
+  const { theme } = useTheme();
   return (
     <View style={{ flex: 1, padding: 12, borderRadius: 14, borderWidth: 1, borderColor: "rgba(0,0,0,0.06)" }}>
-      <Text style={{ color: "#64748B", marginBottom: 6 }}>{label}</Text>
-      <Text style={{ color, fontSize: 20, fontWeight: "800" }}>{value}</Text>
+      <Text style={{ color: "#64748B", marginBottom: 6, fontFamily: theme.typography.textFamily }}>{label}</Text>
+      <Text style={{ color, fontSize: 20, fontWeight: "800", fontFamily: theme.typography.displayFamily }}>{value}</Text>
     </View>
   );
 }

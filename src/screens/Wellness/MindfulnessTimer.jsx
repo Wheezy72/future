@@ -21,17 +21,17 @@ export default function MindfulnessTimer() {
 
   return (
     <View>
-      <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Mindfulness Timer</Text>
-      <Text style={{ color: theme.colors.muted, marginBottom: 12, fontSize: 24, textAlign: "center" }}>{formatTime(seconds)}</Text>
+      <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text, fontFamily: theme.typography.displayFamily }]}>Mindfulness Timer</Text>
+      <Text style={{ color: theme.colors.muted, marginBottom: 12, fontSize: 24, textAlign: "center", fontFamily: theme.typography.textFamily }}>{formatTime(seconds)}</Text>
       <View style={{ flexDirection: "row", gap: 8, justifyContent: "center" }}>
         <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={startTimer}>
-          <Text style={{ color: "#fff", fontWeight: "700" }}>Start</Text>
+          <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Start</Text>
         </TouchableOpacity>
         <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.warning }]} onPress={stopTimer}>
-          <Text style={{ color: "#fff", fontWeight: "700" }}>Pause</Text>
+          <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Pause</Text>
         </TouchableOpacity>
         <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={resetTimer}>
-          <Text style={{ color: "#fff", fontWeight: "700" }}>Reset</Text>
+          <Text style={{ color: "#fff", fontWeight: "700", fontFamily: theme.typography.textFamily }}>Reset</Text>
         </TouchableOpacity>
       </View>
     </View>

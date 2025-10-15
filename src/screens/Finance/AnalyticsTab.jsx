@@ -7,12 +7,12 @@ export default function AnalyticsTab({ analytics }) {
   const { theme } = useTheme();
   return (
     <View>
-      <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Analytics</Text>
-      <Text style={{ color: theme.colors.muted, marginBottom: 12 }}>Total: {formatCurrency(analytics.total)}</Text>
+      <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text, fontFamily: theme.typography.displayFamily }]}>Analytics</Text>
+      <Text style={{ color: theme.colors.muted, marginBottom: 12, fontFamily: theme.typography.textFamily }}>Total: {formatCurrency(analytics.total)}</Text>
       {Object.entries(analytics.byCategory).map(([k, v]) => (
         <View key={k} style={[styles.row, { marginBottom: 8 }]}>
-          <Text style={{ color: theme.colors.text, flex: 1 }}>{k}</Text>
-          <Text style={{ color: theme.colors.muted }}>{formatCurrency(v)}</Text>
+          <Text style={{ color: theme.colors.text, flex: 1, fontFamily: theme.typography.textFamily }}>{k}</Text>
+          <Text style={{ color: theme.colors.muted, fontFamily: theme.typography.textFamily }}>{formatCurrency(v)}</Text>
         </View>
       ))}
     </View>
