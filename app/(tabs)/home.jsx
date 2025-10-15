@@ -48,7 +48,7 @@ export default function Home() {
       </View>
       <ParallaxHeader title={page === "quick" ? "Quick Stats" : capitalize(page)} scrollY={scrollY} />
       <Animated.ScrollView
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: (v) => (scrollY.value = v) } } }], { useNativeDriver: true })}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
         scrollEventThrottle={16}
         contentContainerStyle={{ padding: 16 }}
       >
