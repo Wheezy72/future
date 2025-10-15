@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Alert, Animated } from "react-native";
+import { View, TouchableOpacity, StyleSheet, ScrollView, TextInput, Alert, Animated } from "react-native";
 import AnimatedBackground from "../../src/components/AnimatedBackground";
 import { useTheme } from "../../src/hooks/useTheme";
 import GoalCard from "../../src/components/GoalCard";
@@ -7,6 +7,8 @@ import { addProgress, createGoal, listGoals, removeGoal, setStatus } from "../..
 import DiaryCard from "../../src/components/DiaryCard";
 import { listEntries, upsertEntry } from "../../src/services/diary";
 import { playAchievement } from "../../src/services/sound";
+import { Title, Body } from "../../src/components/Typography";
+import AnimatedRe, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
 /**
  * Goals & Journal: Goals (habit/spending), Diary
@@ -16,6 +18,8 @@ export default function GoalsJournal() {
   const [page, setPage] = useState("goals");
   const [goals, setGoals] = useState([]);
   const [entries, setEntries] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const overlay = useSharedValue(0);
 
   // goal form
   const [title, setTitle] = useState("");
@@ -77,12 +81,22 @@ export default function GoalsJournal() {
     }
   }
 
+  function openDetail(goal) {
+    setSelected(goal);
+    overlay.value = withTiming(1, { duration: 250 });
+  }
+  function closeDetail() {
+    overlay.value = withTiming(0, { duration: 200 });
+    setTimeout(() => setSelected(null), 200);
+  }
+  const overlayStyle = useAnimatedStyle(() => ({ opacity: overlay.value }));
+
   return (
     <AnimatedBackground>
       <View style={styles.header}>
         {["goals", "diary"].map((p) => (
           <TouchableOpacity key={p} accessibilityRole="button" style={[styles.tab, { borderColor: theme.colors.border, backgroundColor: page === p ? theme.colors.card : "transparent" }]} onPress={() => setPage(p)}>
-            <Text style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700", fontFamily: theme.typography.textFamily }}>{capitalize(p)}</Text>
+            <Body style={{ color: page === p ? theme.colors.text : theme.colors.muted, fontWeight: "700" }}>{capitalize(p)}</Body>
           </TouchableOpacity>
         ))}
       </View>
@@ -90,20 +104,20 @@ export default function GoalsJournal() {
         {page === "goals" && (
           <View>
             <Animated.View style={{ transform: [{ scale: celebration.interpolate({ inputRange: [0, 1], outputRange: [1, 1.08] }) }] }}>
-              <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text, fontFamily: theme.typography.displayFamily }]}>Goals</Text>
+              <Title accessibilityRole="header">Goals</Title>
             </Animated.View>
             <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
               <TextInput placeholder="Goal title" placeholderTextColor={theme.colors.muted} value={title} onChangeText={setTitle} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
               <View style={{ flexDirection: "row", gap: 8 }}>
                 {["habit", "spending"].map(t => (
                   <TouchableOpacity key={t} accessibilityRole="button" onPress={() => setType(t)} style={[styles.cat, { borderColor: theme.colors.border, backgroundColor: type === t ? theme.colors.surface : "transparent" }]}>
-                    <Text style={{ color: theme.colors.text }}>{capitalize(t)}</Text>
+                    <Body style={{ color: theme.colors.text }}>{capitalize(t)}</Body>
                   </TouchableOpacity>
                 ))}
               </View>
               <TextInput placeholder="Target" placeholderTextColor={theme.colors.muted} keyboardType="numeric" value={target} onChangeText={setTarget} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
               <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={onCreateGoal}>
-                <Text style={{ color: "#fff", fontWeight: "700" }}>Create Goal</Text>
+                <Body style={{ color: "#fff", fontWeight: "700" }}>Create Goal</Body>
               </TouchableOpacity>
             </View>
             {sortedGoals.map(g => (
@@ -114,7 +128,7 @@ export default function GoalsJournal() {
                 onPause={onPause}
                 onResume={onResume}
                 onComplete={onComplete}
-                onPress={() => {}}
+                onPress={openDetail}
               />
             ))}
           </View>
@@ -122,25 +136,40 @@ export default function GoalsJournal() {
 
         {page === "diary" && (
           <View>
-            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Journal</Text>
+            <Title accessibilityRole="header">Journal</Title>
             <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
               <TextInput placeholder="Write your thoughts..." placeholderTextColor={theme.colors.muted} value={text} onChangeText={setText} multiline style={[styles.input, { minHeight: 120, borderColor: theme.colors.border, color: theme.colors.text }]} />
               <View style={{ flexDirection: "row", gap: 8 }}>
                 {["happy", "focused", "calm"].map(m => (
                   <TouchableOpacity key={m} accessibilityRole="button" onPress={() => setMood(m)} style={[styles.cat, { borderColor: theme.colors.border, backgroundColor: mood === m ? theme.colors.surface : "transparent" }]}>
-                    <Text style={{ color: theme.colors.text }}>{capitalize(m)}</Text>
+                    <Body style={{ color: theme.colors.text }}>{capitalize(m)}</Body>
                   </TouchableOpacity>
                 ))}
               </View>
               <TextInput placeholder="XP" placeholderTextColor={theme.colors.muted} keyboardType="numeric" value={xp} onChangeText={setXp} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
               <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={onAddEntry}>
-                <Text style={{ color: "#fff", fontWeight: "700" }}>Add Entry</Text>
+                <Body style={{ color: "#fff", fontWeight: "700" }}>Add Entry</Body>
               </TouchableOpacity>
             </View>
             {entries.map(e => <DiaryCard key={e.id} entry={e} onPress={() => {}} onDelete={() => {}} />)}
           </View>
         )}
       </ScrollView>
+
+      {selected && (
+        <AnimatedRe.View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.6)", justifyContent: "center", padding: 24 }, overlayStyle]}>
+          <View style={{ backgroundColor: theme.colors.card, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: theme.colors.border }}>
+            <Title accessibilityRole="header" style={{ marginBottom: 8 }}>{selected.title}</Title>
+            <Body style={{ color: theme.colors.muted, marginBottom: 8 }}>{selected.type === "habit" ? "Habit" : "Spending"} — Target {selected.target}</Body>
+            <Body>Progress {selected.progress}</Body>
+            <View style={{ flexDirection: "row", justifyContent: "flex-end", marginTop: 12 }}>
+              <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={closeDetail}>
+                <Body style={{ color: "#fff" }}>Close</Body>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </AnimatedRe.View>
+      )}
     </AnimatedBackground>
   );
 }
