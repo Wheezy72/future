@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "sdkVersion": "49.0.0",
     "orientation": "portrait",
+    "scheme": "future",
     "icon": "./assets/images/icon.png",
     "splash": {
       "image": "./assets/images/icon.png",
@@ -18,7 +19,8 @@
       "**/*"
     ],
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "android": {
       "package": "com.future.app",
@@ -27,7 +29,22 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#000000"
       },
-      "permissions": []
+      "permissions": [],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "future"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     }
   }
 }
