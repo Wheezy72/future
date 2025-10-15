@@ -15,7 +15,9 @@ export function useFonts() {
     (async () => {
       try {
         await Font.loadAsync({
-          Orbitron: require("../../assets/fonts/Orbitron.ttf"),
+          // If you use a variable-weight Orbitron file, place it in assets/fonts
+          // and name it `Orbitron-VariableFont_wght.ttf` (or update this path).
+          Orbitron: require("../../assets/fonts/Orbitron-VariableFont_wght.ttf"),
           Rajdhani: require("../../assets/fonts/Rajdhani.ttf"),
           ShareTechMono: require("../../assets/fonts/ShareTechMono.ttf")
         });
