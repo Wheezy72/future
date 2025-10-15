@@ -10,10 +10,12 @@ import { useEffect, useState } from "react";
  */
 export function useFonts() {
   const [ready, setReady] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
+        console.log('Loading fonts...');
         await Font.loadAsync({
           // If you use a variable-weight Orbitron file, place it in assets/fonts
           // and name it `Orbitron-VariableFont_wght.ttf` (or update this path).
@@ -21,8 +23,13 @@ export function useFonts() {
           Rajdhani: require("../../assets/fonts/Rajdhani.ttf"),
           ShareTechMono: require("../../assets/fonts/ShareTechMono.ttf")
         });
-      } catch (_e) {
-        // Fallback to system fonts
+        console.log('Fonts loaded successfully!');
+        setFontsLoaded(true);
+      } catch (error) {
+        console.warn('Font loading failed, using system fonts:', error);
+        // Even on font loading failure, we set ready to true
+        // Typography components will fallback to system fonts
+        setFontsLoaded(false);
       } finally {
         setReady(true);
       }
