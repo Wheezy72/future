@@ -1,11 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import AnimatedBackground from "../../src/components/AnimatedBackground";
 import { useTheme } from "../../src/hooks/useTheme";
 import { getLevel } from "../../src/constants/Levels";
 import { listGoals } from "../../src/services/goals";
 import { listEntries } from "../../src/services/diary";
 import { listExpenses } from "../../src/services/finance";
+import Animated, { useSharedValue } from "react-native-reanimated";
+import ParallaxHeader from "../../src/components/ParallaxHeader";
+import Dashboard from "../../src/screens/Home/Dashboard";
+import Achievements from "../../src/screens/Home/Achievements";
+import QuickStats from "../../src/screens/Home/QuickStats";
 
 /**
  * Home tab: Dashboard, Achievements, Quick Stats
@@ -29,6 +34,8 @@ export default function Home() {
 
   const level = useMemo(() => getLevel(xp), [xp]);
 
+  const scrollY = useSharedValue(0);
+
   return (
     <AnimatedBackground>
       <View style={styles.header}>
@@ -38,51 +45,17 @@ export default function Home() {
           </TouchableOpacity>
         ))}
       </View>
-      <ScrollView contentContainerStyle={{ padding: 16 }}>
-        {page === "dashboard" && (
-          <View>
-            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Welcome to Future</Text>
-            <Text style={{ color: theme.colors.muted, marginBottom: 12 }}>Level {level.level} — {level.title}</Text>
-            <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-              <Text style={{ color: theme.colors.text, fontWeight: "700" }}>Today</Text>
-              <Text style={{ color: theme.colors.muted }}>Goals: {stats.goals} • Diary entries: {stats.diary} • Expenses: {stats.expenses}</Text>
-            </View>
-          </View>
-        )}
-        {page === "achievements" && (
-          <View>
-            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Achievements</Text>
-            <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-              <Text style={{ color: theme.colors.text }}>Consistency Champion</Text>
-              <Text style={{ color: theme.colors.muted }}>Maintain a 7-day diary streak</Text>
-            </View>
-            <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-              <Text style={{ color: theme.colors.text }}>Budget Boss</Text>
-              <Text style={{ color: theme.colors.muted }}>Keep expenses under budget for a month</Text>
-            </View>
-          </View>
-        )}
-        {page === "quick" && (
-          <View>
-            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Quick Stats</Text>
-            <View style={[styles.row]}>
-              <Stat label="Goals" value={stats.goals} color={theme.colors.primary} />
-              <Stat label="Diary" value={stats.diary} color={theme.colors.secondary} />
-              <Stat label="Expenses" value={stats.expenses} color={theme.colors.accent} />
-            </View>
-          </View>
-        )}
-      </ScrollView>
+      <ParallaxHeader title={page === "quick" ? "Quick Stats" : capitalize(page)} scrollY={scrollY} />
+      <Animated.ScrollView
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: (v) => (scrollY.value = v) } } }], { useNativeDriver: true })}
+        scrollEventThrottle={16}
+        contentContainerStyle={{ padding: 16 }}
+      >
+        {page === "dashboard" && <Dashboard stats={stats} level={level} />}
+        {page === "achievements" && <Achievements />}
+        {page === "quick" && <QuickStats stats={stats} />}
+      </Animated.ScrollView>
     </AnimatedBackground>
-  );
-}
-
-function Stat({ label, value, color }) {
-  return (
-    <View style={{ flex: 1, padding: 12, borderRadius: 14, borderWidth: 1, borderColor: "rgba(0,0,0,0.06)" }}>
-      <Text style={{ color: "#64748B", marginBottom: 6 }}>{label}</Text>
-      <Text style={{ color, fontSize: 20, fontWeight: "800" }}>{value}</Text>
-    </View>
   );
 }
 
@@ -90,8 +63,5 @@ function capitalize(s) { return s.slice(0, 1).toUpperCase() + s.slice(1); }
 
 const styles = StyleSheet.create({
   header: { paddingHorizontal: 16, paddingTop: 16, flexDirection: "row", gap: 8 },
-  tab: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 12, borderWidth: 1 },
-  title: { fontSize: 22, fontWeight: "800", marginBottom: 12 },
-  card: { borderRadius: 16, padding: 14, borderWidth: 1, marginBottom: 12 },
-  row: { flexDirection: "row", gap: 8 }
+  tab: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 12, borderWidth: 1 }
 });

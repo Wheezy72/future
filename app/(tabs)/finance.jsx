@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, TextInput } from "react-native";
 import AnimatedBackground from "../../src/components/AnimatedBackground";
 import { useTheme } from "../../src/hooks/useTheme";
-import { addExpense, analytics, listBudgets, listExpenses, listSavings, upsertBudget, upsertSaving } from "../../src/services/finance";
-import { ExpenseCategories } from "../../src/constants/Categories";
+import { analytics, listBudgets, listExpenses, listSavings, addExpense } from "../../src/services/finance";
+import Animated, { useSharedValue } from "react-native-reanimated";
+import ParallaxHeader from "../../src/components/ParallaxHeader";
+import ExpensesTab from "../../src/screens/Finance/ExpensesTab";
+import BudgetTab from "../../src/screens/Finance/BudgetTab";
+import SavingsTab from "../../src/screens/Finance/SavingsTab";
+import AnalyticsTab from "../../src/screens/Finance/AnalyticsTab";
 import { formatCurrency } from "../../src/utils/format";
 
 /**
@@ -15,9 +20,11 @@ export default function Finance() {
   const [expenses, setExpenses] = useState([]);
   const [budgets, setBudgets] = useState([]);
   const [savings, setSavings] = useState([]);
-  const [amount, setAmount] = useState("");
-  const [note, setNote] = useState("");
-  const [category, setCategory] = useState("food");
+
+  // M-Pesa parsing state
+  const [mpesaMsg, setMpesaMsg] = useState("");
+  const [mpesaAmount, setMpesaAmount] = useState("");
+  const [mpesaCategory, setMpesaCategory] = useState("mpesa");
 
   async function refresh() {
     setExpenses(await listExpenses());
@@ -26,36 +33,37 @@ export default function Finance() {
   }
   useEffect(() => { refresh(); }, []);
 
-  async function onAddExpense() {
-    try {
-      const e = await addExpense({ amount: Number(amount), category, note });
-      setAmount(""); setNote("");
-      await refresh();
-      Alert.alert("Added", `Expense ${formatCurrency(e.amount)} in ${e.category}`);
-    } catch (e) {
-      Alert.alert("Error", e.message);
-    }
-  }
-
-  async function onUpsertBudget() {
-    try {
-      await upsertBudget({ category, limit: Number(amount), period: "monthly" });
-      await refresh();
-    } catch (e) {
-      Alert.alert("Error", e.message);
-    }
-  }
-
-  async function onUpsertSaving() {
-    try {
-      await upsertSaving({ title: note || "Goal", target: Number(amount), saved: 0 });
-      await refresh();
-    } catch (e) {
-      Alert.alert("Error", e.message);
-    }
-  }
-
   const an = analytics(expenses);
+  const scrollY = useSharedValue(0);
+
+  function parseMpesa(msg) {
+    // Very simple parser: extract amount and infer category keywords
+    const amtMatch = msg.match(/(?:KES|Ksh)\s?([\d,]+(?:\.\d{2})?)/i);
+    const amount = amtMatch ? Number(amtMatch[1].replace(/,/g, "")) : 0;
+    let cat = "mpesa";
+    if (/Buy Goods|Till/i.test(msg)) cat = "food";
+    else if (/PayBill|Bill/i.test(msg)) cat = "bills";
+    else if (/Send|Sent to|Transfer/i.test(msg)) cat = "transport";
+    else if (/Airtime|Bundle/i.test(msg)) cat = "entertainment";
+    return { amount, category: cat };
+  }
+
+  function onParse() {
+    const { amount, category } = parseMpesa(mpesaMsg);
+    setMpesaAmount(amount ? String(amount) : "");
+    setMpesaCategory(category);
+  }
+
+  async function onAddFromMpesa() {
+    try {
+      const e = await addExpense({ amount: Number(mpesaAmount), category: mpesaCategory, note: "M-Pesa" });
+      Alert.alert("Added", `Expense ${formatCurrency(e.amount)} in ${e.category}`);
+      setMpesaMsg(""); setMpesaAmount(""); setMpesaCategory("mpesa");
+      await refresh();
+    } catch (e) {
+      Alert.alert("Error", e.message);
+    }
+  }
 
   return (
     <AnimatedBackground>
@@ -66,44 +74,55 @@ export default function Finance() {
           </TouchableOpacity>
         ))}
       </View>
-      <ScrollView contentContainerStyle={{ padding: 16 }}>
-        {(page === "expenses" || page === "budgets" || page === "savings") && (
-          <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-            <TextInput placeholder="Amount" placeholderTextColor={theme.colors.muted} keyboardType="numeric" value={amount} onChangeText={setAmount} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
-            <TextInput placeholder={page === "savings" ? "Saving title" : "Note"} placeholderTextColor={theme.colors.muted} value={note} onChangeText={setNote} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text }]} />
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginVertical: 10 }}>
-              {ExpenseCategories.map(c => (
-                <TouchableOpacity key={c.key} accessibilityRole="button" onPress={() => setCategory(c.key)} style={[styles.cat, { borderColor: theme.colors.border, backgroundColor: category === c.key ? theme.colors.surface : "transparent" }]}>
-                  <Text style={{ color: theme.colors.text }}>{c.label}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-            <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={page === "expenses" ? onAddExpense : page === "budgets" ? onUpsertBudget : onUpsertSaving}>
-              <Text style={{ color: "#fff", fontWeight: "700" }}>{page === "expenses" ? "Add Expense" : page === "budgets" ? "Save Budget" : "Add Saving"}</Text>
+      <ParallaxHeader title={capitalize(page)} scrollY={scrollY} />
+      <Animated.ScrollView
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: (v) => (scrollY.value = v) } } }], { useNativeDriver: true })}
+        scrollEventThrottle={16}
+        contentContainerStyle={{ padding: 16 }}
+      >
+        {page === "expenses" && <ExpensesTab onAdded={refresh} />}
+        {page === "budgets" && <BudgetTab onSaved={refresh} />}
+        {page === "savings" && <SavingsTab onSaved={refresh} />}
+        {page === "mpesa" && (
+          <View>
+            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>M-Pesa Parser</Text>
+            <TextInput
+              placeholder="Paste M-Pesa message"
+              placeholderTextColor={theme.colors.muted}
+              value={mpesaMsg}
+              onChangeText={setMpesaMsg}
+              multiline
+              style={{ borderWidth: 1, borderColor: theme.colors.border, borderRadius: 12, padding: 10, color: theme.colors.text, minHeight: 100, marginBottom: 8 }}
+            />
+            <View style={{ flexDirection: "row", gap: 8, marginBottom: 8 }}>
+              <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={onParse}>
+                <Text style={{ color: "#fff", fontWeight: "700" }}>Parse</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ flexDirection: "row", gap: 8, marginBottom: 8 }}>
+              <TextInput
+                placeholder="Amount"
+                placeholderTextColor={theme.colors.muted}
+                value={mpesaAmount}
+                onChangeText={setMpesaAmount}
+                keyboardType="numeric"
+                style={{ flex: 1, borderWidth: 1, borderColor: theme.colors.border, borderRadius: 12, padding: 10, color: theme.colors.text }}
+              />
+              <TextInput
+                placeholder="Category (e.g., food, bills, transport, entertainment, mpesa)"
+                placeholderTextColor={theme.colors.muted}
+                value={mpesaCategory}
+                onChangeText={setMpesaCategory}
+                style={{ flex: 1, borderWidth: 1, borderColor: theme.colors.border, borderRadius: 12, padding: 10, color: theme.colors.text }}
+              />
+            </View>
+            <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.primary }]} onPress={onAddFromMpesa}>
+              <Text style={{ color: "#fff", fontWeight: "700" }}>Add Expense</Text>
             </TouchableOpacity>
           </View>
         )}
-
-        {page === "mpesa" && (
-          <View>
-            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>M-Pesa</Text>
-            <Text style={{ color: theme.colors.muted, marginBottom: 12 }}>Track M-Pesa related expenses by using the M-Pesa category above. Integrations can be added later via APIs.</Text>
-          </View>
-        )}
-
-        {page === "analytics" && (
-          <View>
-            <Text accessibilityRole="header" style={[styles.title, { color: theme.colors.text }]}>Analytics</Text>
-            <Text style={{ color: theme.colors.muted, marginBottom: 12 }}>Total: {formatCurrency(an.total)}</Text>
-            {Object.entries(an.byCategory).map(([k, v]) => (
-              <View key={k} style={[styles.row, { marginBottom: 8 }]}>
-                <Text style={{ color: theme.colors.text, flex: 1 }}>{k}</Text>
-                <Text style={{ color: theme.colors.muted }}>{formatCurrency(v)}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-      </ScrollView>
+        {page === "analytics" && <AnalyticsTab analytics={an} />}
+      </Animated.ScrollView>
     </AnimatedBackground>
   );
 }
@@ -114,8 +133,5 @@ const styles = StyleSheet.create({
   header: { paddingHorizontal: 16, paddingTop: 16, flexDirection: "row", gap: 8 },
   tab: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 12, borderWidth: 1 },
   title: { fontSize: 22, fontWeight: "800", marginBottom: 12 },
-  card: { borderRadius: 16, padding: 14, borderWidth: 1, marginBottom: 12 },
-  input: { borderWidth: 1, borderRadius: 12, padding: 10, marginBottom: 8 },
-  cat: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1, marginRight: 8 },
   btn: { paddingVertical: 12, paddingHorizontal: 16, borderRadius: 12 }
 });

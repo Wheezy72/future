@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Alert,
 import AnimatedBackground from "../../src/components/AnimatedBackground";
 import { useTheme } from "../../src/hooks/useTheme";
 import { getSecurityPrefs, setSecurityPrefs, setPin } from "../../src/services/auth";
+import { scheduleDaily, cancel } from "../../src/services/notifications";
 
 /**
  * Settings: Theme, Security, Backup/Restore, Notifications
@@ -11,6 +12,11 @@ export default function Settings() {
   const { theme, mode, setMode } = useTheme();
   const [prefs, setPrefs] = useState({ biometrics: true, lockTimeout: 300000 });
   const [pin, setPinInput] = useState("");
+
+  const [habitHour, setHabitHour] = useState("8");
+  const [habitMinute, setHabitMinute] = useState("0");
+  const [mindHour, setMindHour] = useState("21");
+  const [mindMinute, setMindMinute] = useState("0");
 
   useEffect(() => {
     (async () => setPrefs(await getSecurityPrefs()))();
@@ -31,6 +37,33 @@ export default function Settings() {
       await setPin(pin);
       setPinInput("");
       Alert.alert("Saved", "PIN updated");
+    } catch (e) {
+      Alert.alert("Error", e.message);
+    }
+  }
+
+  async function scheduleHabit() {
+    try {
+      await scheduleDaily("habit_reminder", {
+        title: "Habit Reminder",
+        body: "Stay on track with your goals.",
+        hour: Number(habitHour),
+        minute: Number(habitMinute)
+      });
+      Alert.alert("Scheduled", "Habit reminder set.");
+    } catch (e) {
+      Alert.alert("Error", e.message);
+    }
+  }
+  async function scheduleMindfulness() {
+    try {
+      await scheduleDaily("mindfulness_reminder", {
+        title: "Mindfulness",
+        body: "Take a mindful minute.",
+        hour: Number(mindHour),
+        minute: Number(mindMinute)
+      });
+      Alert.alert("Scheduled", "Mindfulness reminder set.");
     } catch (e) {
       Alert.alert("Error", e.message);
     }
@@ -82,7 +115,22 @@ export default function Settings() {
 
         <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
           <Text style={{ color: theme.colors.text, fontWeight: "700", marginBottom: 8 }}>Notifications</Text>
-          <Text style={{ color: theme.colors.muted }}>Local notifications can be added as an enhancement.</Text>
+          <View style={styles.row}>
+            <Text style={{ color: theme.colors.text, flex: 1 }}>Habit Reminder (hour/min)</Text>
+            <TextInput keyboardType="numeric" value={habitHour} onChangeText={setHabitHour} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, width: 60 }]} />
+            <TextInput keyboardType="numeric" value={habitMinute} onChangeText={setHabitMinute} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, width: 60 }]} />
+            <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={scheduleHabit}>
+              <Text style={{ color: "#fff" }}>Set</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+            <Text style={{ color: theme.colors.text, flex: 1 }}>Mindfulness Reminder (hour/min)</Text>
+            <TextInput keyboardType="numeric" value={mindHour} onChangeText={setMindHour} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, width: 60 }]} />
+            <TextInput keyboardType="numeric" value={mindMinute} onChangeText={setMindMinute} style={[styles.input, { borderColor: theme.colors.border, color: theme.colors.text, width: 60 }]} />
+            <TouchableOpacity accessibilityRole="button" style={[styles.btn, { backgroundColor: theme.colors.secondary }]} onPress={scheduleMindfulness}>
+              <Text style={{ color: "#fff" }}>Set</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </AnimatedBackground>

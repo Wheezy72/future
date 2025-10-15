@@ -1,7 +1,8 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { ThemeProvider, useTheme } from "../src/hooks/useTheme";
+import { useFonts } from "../src/hooks/useFonts";
 import GlassTabBar from "../src/components/GlassTabBar";
 
 function TabIcon({ label, focused }) {
@@ -64,6 +65,14 @@ function LayoutInner() {
 }
 
 export default function RootLayout() {
+  const fontsReady = useFonts();
+  if (!fontsReady) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Loading…</Text>
+      </View>
+    );
+  }
   return (
     <ThemeProvider>
       <LayoutInner />

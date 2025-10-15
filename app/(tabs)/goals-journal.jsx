@@ -6,6 +6,7 @@ import GoalCard from "../../src/components/GoalCard";
 import { addProgress, createGoal, listGoals, removeGoal, setStatus } from "../../src/services/goals";
 import DiaryCard from "../../src/components/DiaryCard";
 import { listEntries, upsertEntry } from "../../src/services/diary";
+import { playAchievement } from "../../src/services/sound";
 
 /**
  * Goals & Journal: Goals (habit/spending), Diary
@@ -52,6 +53,7 @@ export default function GoalsJournal() {
         Animated.timing(celebration, { toValue: 1, duration: 300, useNativeDriver: true }),
         Animated.timing(celebration, { toValue: 0, duration: 300, useNativeDriver: true })
       ]).start();
+      playAchievement();
       Alert.alert("Goal Complete", "Great job!");
     }
   }
