@@ -9,3 +9,4 @@ ios/
 .DS_Store
 assets/*.psd
 assets/*.ai
+package-lock.json
